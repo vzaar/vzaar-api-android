@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+        <variable
+            name="loadableViewHandler"
+            type="com.vzaar.apiclient.sample.util.LoadableViewListener" />
+        <variable
+            name="handler"
+            type="com.vzaar.apiclient.sample.categorylist.CategoryListView" />
+    </data>
+
+    <RelativeLayout
+        android:id="@+id/activity_categoryList"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <include layout="@layout/loading_view" />
+
+        <include layout="@layout/error_view" />
+
+        <RelativeLayout
+            android:id="@+id/contentView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <Button
+                android:id="@+id/categoryList_button_load"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:onClick="@{() -> loadableViewHandler.onLoadNextRequested()}"
+                android:text="@string/button_text_load_more" />
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/categoryList_recyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_above="@id/categoryList_button_load" />
+        </RelativeLayout>
+    </RelativeLayout>
+</layout>

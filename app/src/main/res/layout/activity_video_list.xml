@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="handler"
+            type="com.vzaar.apiclient.sample.util.LoadableViewListener" />
+    </data>
+
+    <RelativeLayout
+
+        android:id="@+id/activity_main"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context="com.vzaar.apiclient.sample.videolist.VideoListActivity">
+
+        <include layout="@layout/loading_view" />
+
+        <include layout="@layout/error_view" />
+
+        <RelativeLayout
+            android:id="@+id/contentView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <Button
+                android:id="@+id/videoList_button_load"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:onClick="@{() -> handler.onLoadNextRequested()}"
+                android:text="@string/button_text_load_more" />
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/videoList_recyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_above="@+id/videoList_button_load" />
+        </RelativeLayout>
+    </RelativeLayout>
+</layout>

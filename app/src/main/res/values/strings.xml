@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">Vzaar API Client</string>
+    <string name="label_video_detail_duration">Duration</string>
+    <string name="label_video_detail_created_at">Created</string>
+    <string name="label_video_detail_description">Description</string>
+    <string name="button_text_load_more">Load more</string>
+    <string name="message_upload_success">The video was successfully created.</string>
+    <string name="message_upload_failure">Video creation failed.</string>
+    <string name="title_upload_progress">Uploading…</string>
+    <string name="browse">Browse</string>
+    <string name="upload">Upload</string>
+    <string name="label_video_upload_title">Title</string>
+    <string name="label_video_upload_description">Description</string>
+    <string name="message_error_retry">An error has occurred. Click here to retry.</string>
+</resources>
