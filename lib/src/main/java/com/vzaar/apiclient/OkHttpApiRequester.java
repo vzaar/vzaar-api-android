@@ -1,23 +1,36 @@
 package com.vzaar.apiclient;
 
+import android.net.Uri;
+
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.vzaar.apiclient.request.VzaarRequest;
 import com.vzaar.apiclient.response.VzaarResponse;
 
+import java.io.ByteArrayOutputStream;
+import java.io.DataOutputStream;
+import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.lang.reflect.Type;
+import java.net.HttpURLConnection;
+import java.net.URI;
+import java.net.URL;
+import java.util.Iterator;
+import java.util.Map;
 
 import okhttp3.Call;
+import okhttp3.FormBody;
 import okhttp3.HttpUrl;
 import okhttp3.MediaType;
+import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
 class OkHttpApiRequester implements ApiRequester {
-    private static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
+    private static final MediaType mediaType = MediaType.parse("application/json; charset=utf-8");
     private final OkHttpClient okHttpClient;
     private final Platform platform;
     private final Gson gson;
@@ -51,7 +64,7 @@ class OkHttpApiRequester implements ApiRequester {
 
 
         if (request.getMethod() != VzaarRequest.Method.GET) {
-            RequestBody body = RequestBody.create(JSON, request.getBodyAsJson());
+            RequestBody body = RequestBody.create(mediaType, request.getBodyAsJson());
             switch (request.getMethod()) {
                 case POST:
                     requestBuilder = requestBuilder.post(body);
@@ -70,6 +83,77 @@ class OkHttpApiRequester implements ApiRequester {
         Call call = okHttpClient.newCall(requestBuilder.build());
 
         call.enqueue(handler);
+    }
+
+    @Override
+    public <T extends VzaarResponse> void sendFileRequest(VzaarRequest request, Type responseType, VzaarCallback<T> callback) {
+
+        String boundaryString = "Boundary-" + System.currentTimeMillis() + "";
+        String contentType = "multipart/form-data; boundary=" + boundaryString;
+
+        HttpUrl url = HttpUrl.get(request.buildUrl(baseUrl));
+
+        okhttp3.Request.Builder requestBuilder = new okhttp3.Request.Builder()
+                .url(url)
+                .addHeader("X-Client-Id", clientId)
+                .addHeader("X-Auth-Token", token)
+                .addHeader("Content-Type", contentType);
+
+        File file = request.getFile();
+
+        MultipartBody.Builder bodyBuilder = new MultipartBody.Builder()
+                .addFormDataPart("file",file.getName(),MultipartBody.create(MediaType.parse("text/plain"), file));
+
+        Map<String, String> fileParams = request.getFileParams();
+
+        Iterator it = fileParams.entrySet().iterator();
+        while (it.hasNext()) {
+            Map.Entry pair = (Map.Entry)it.next();
+            System.out.println(pair.getKey() + " = " + pair.getValue());
+            bodyBuilder = bodyBuilder.addFormDataPart(pair.getKey().toString(),pair.getValue().toString());
+            it.remove(); // avoids a ConcurrentModificationException
+        }
+
+        if (request.getMethod() == VzaarRequest.Method.POST){
+            requestBuilder = requestBuilder.post(bodyBuilder.build());
+        }else{
+            requestBuilder = requestBuilder.patch(bodyBuilder.build());
+        }
+
+        Callback<T> handler = new Callback<>(gson, callback, responseType, platform);
+
+        Call call = okHttpClient.newCall(requestBuilder.build());
+
+        call.enqueue(handler);
+    }
+
+    @Override
+    public <T extends VzaarResponse> void sendImageFrameRequest(VzaarRequest request, Type responseType, VzaarCallback<T> callback) {
+
+        String boundaryString = "Boundary-" + System.currentTimeMillis() + "";
+        String contentType = "multipart/form-data; boundary=" + boundaryString;
+
+        HttpUrl url = HttpUrl.get(request.buildUrl(baseUrl));
+
+        okhttp3.Request.Builder requestBuilder = new okhttp3.Request.Builder()
+                .url(url)
+                .addHeader("X-Client-Id", clientId)
+                .addHeader("X-Auth-Token", token)
+                .addHeader("Content-Type", contentType);
+
+        File file = request.getFile();
+
+        MultipartBody.Builder bodyBuilder = new MultipartBody.Builder()
+                .addFormDataPart("image",file.getName(),MultipartBody.create(MediaType.parse("application/octet-stream"), file));
+
+        requestBuilder = requestBuilder.post(bodyBuilder.build());
+
+        Callback<T> handler = new Callback<>(gson, callback, responseType, platform);
+
+        Call call = okHttpClient.newCall(requestBuilder.build());
+
+        call.enqueue(handler);
+
     }
 
     private static class Callback<T extends VzaarResponse> implements okhttp3.Callback {

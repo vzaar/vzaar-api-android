@@ -12,7 +12,7 @@ import com.vzaar.apiclient.VzaarCallback;
 public class CreateMultipartUploadSignatureRequest extends VzaarRequest {
 
     private CreateMultipartUploadSignatureRequest() {
-        super("api/v2/signature/multipart", Method.POST);
+        super("api/v2/signature/multipart/2", Method.POST);
     }
 
     public static class Builder {

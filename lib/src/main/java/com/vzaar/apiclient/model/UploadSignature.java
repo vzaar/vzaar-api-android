@@ -1,12 +1,13 @@
 package com.vzaar.apiclient.model;
 
+import com.google.gson.annotations.SerializedName;
+
 @SuppressWarnings("unused")
 public class UploadSignature {
-    private String accessKeyId;
+    //private String accessKeyId;
     private String key;
     private String acl;
     private String policy;
-    private String signature;
     private String successActionStatus;
     private String contentType;
     private String guid;
@@ -15,6 +16,47 @@ public class UploadSignature {
     private String partSize;
     private long partSizeInBytes;
     private int parts;
+
+    @SerializedName("x-amz-credential")
+    private String xAmzCredential;
+    @SerializedName("x-amz-algorithm")
+    private String xAmzAlgorithm;
+    @SerializedName("x-amz-date")
+    private String xAmzDate;
+    @SerializedName("x-amz-signature")
+    private String xAmzSignature;
+
+    public String getXAMZCredential() {
+        return xAmzCredential;
+    }
+
+    public void setXAMZCredential(String xAmzCredential) {
+        this.xAmzCredential = xAmzCredential;
+    }
+
+    public String getXAMZAlgorithm() {
+        return xAmzAlgorithm;
+    }
+
+    public void setXAMZAlgorith(String xAmzAlgorithm) {
+        this.xAmzAlgorithm = xAmzAlgorithm;
+    }
+
+    public String getXAMZDate() {
+        return xAmzDate;
+    }
+
+    public void setXAMZDate(String xAmzDate) {
+        this.xAmzDate = xAmzDate;
+    }
+
+    public String getXAMZSignature() {
+        return xAmzSignature;
+    }
+
+    public void setXAMZSignature(String xAmzSignature) {
+        this.xAmzSignature = xAmzSignature;
+    }
 
     public String getAcl() {
         return acl;
@@ -40,13 +82,13 @@ public class UploadSignature {
         this.partSizeInBytes = partSizeInBytes;
     }
 
-    public String getAccessKeyId() {
-        return accessKeyId;
-    }
+    //public String getAccessKeyId() {
+    //    return accessKeyId;
+    //}
 
-    public void setAccessKeyId(String accessKeyId) {
-        this.accessKeyId = accessKeyId;
-    }
+    //public void setAccessKeyId(String accessKeyId) {
+    //    this.accessKeyId = accessKeyId;
+    //}
 
     public String getBucket() {
         return bucket;
@@ -94,14 +136,6 @@ public class UploadSignature {
 
     public void setPolicy(String policy) {
         this.policy = policy;
-    }
-
-    public String getSignature() {
-        return signature;
-    }
-
-    public void setSignature(String signature) {
-        this.signature = signature;
     }
 
     public String getSuccessActionStatus() {

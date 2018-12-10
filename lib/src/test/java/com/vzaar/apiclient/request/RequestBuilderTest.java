@@ -803,7 +803,7 @@ public class RequestBuilderTest {
         VzaarRequest request = builder.build();
 
         // Then
-        assertThat(request.getEndpoint(), is("api/v2/signature/single"));
+        assertThat(request.getEndpoint(), is("api/v2/signature/single/2"));
         assertThat(request.getMethod(), is(VzaarRequest.Method.POST));
     }
 
@@ -859,7 +859,7 @@ public class RequestBuilderTest {
         VzaarRequest request = builder.build();
 
         // Then
-        assertThat(request.getEndpoint(), is("api/v2/signature/multipart"));
+        assertThat(request.getEndpoint(), is("api/v2/signature/multipart/2"));
         assertThat(request.getMethod(), is(VzaarRequest.Method.POST));
     }
 
@@ -1182,4 +1182,38 @@ public class RequestBuilderTest {
         assertThat(request.getQueryParams().size(), is(0));
         assertThat(request.getPathParams().size(), is(1));
     }
+
+
+
+    @Test
+    public void testUpdateImageFrameRequestBuilder_endpoint() {
+        // Given
+        UpdateImageFrameRequest.Builder builder = new UpdateImageFrameRequest.Builder(1);
+
+        // When
+        VzaarRequest request = builder.build();
+
+        // Then
+        assertThat(request.getEndpoint(), is("api/v2/videos/1/image"));
+        assertThat(request.getMethod(), is(VzaarRequest.Method.PATCH));
+
+    }
+
+    @Test
+    public void testUpdateImageFrameRequestBuilder_build_minParams() {
+        // Given
+        UpdateImageFrameRequest.Builder builder = new UpdateImageFrameRequest.Builder(1)
+                .setTime((float)1.5);
+
+        // When
+        VzaarRequest request = builder.build();
+
+        // Then
+        assertThat(request.getBody().get("time").getAsFloat(), is((float)1.5));
+        assertThat(request.getBody().entrySet().size(), is(1));
+        assertThat(request.getQueryParams().size(), is(0));
+        assertThat(request.getPathParams().size(), is(1));
+    }
+
+
 }

@@ -1,10 +1,12 @@
 package com.vzaar.apiclient.sample.home;
 
 import android.content.Intent;
+import android.database.Cursor;
 import android.databinding.DataBindingUtil;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.annotation.NonNull;
-
 import com.hannesdorfmann.mosby.mvp.MvpActivity;
 import com.vzaar.apiclient.sample.R;
 import com.vzaar.apiclient.sample.categorylist.CategoryListActivity;
@@ -18,6 +20,7 @@ public class HomeActivity extends MvpActivity<HomeView, HomePresenter> implement
         super.onCreate(savedInstanceState);
         ActivityHomeBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_home);
         binding.setHandler(this);
+
     }
 
     @NonNull

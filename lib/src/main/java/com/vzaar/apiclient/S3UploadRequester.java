@@ -32,10 +32,12 @@ class S3UploadRequester implements UploadRequester {
                                                  UploadSignature uploadSignature, int partIndex) {
         MultipartBody.Builder bodyBuilder = new MultipartBody.Builder()
                 .addFormDataPart("key", uploadSignature.getKeyForUpload(filename, partIndex))
-                .addFormDataPart("AWSAccessKeyId", uploadSignature.getAccessKeyId())
                 .addFormDataPart("acl", uploadSignature.getAcl())
                 .addFormDataPart("policy", uploadSignature.getPolicy())
-                .addFormDataPart("signature", uploadSignature.getSignature())
+                .addFormDataPart("X-Amz-Algorithm", uploadSignature.getXAMZAlgorithm())
+                .addFormDataPart("X-Amz-Credential", uploadSignature.getXAMZCredential())
+                .addFormDataPart("X-Amz-Date", uploadSignature.getXAMZDate())
+                .addFormDataPart("X-Amz-Signature", uploadSignature.getXAMZSignature())
                 .addFormDataPart("success_action_status",
                         uploadSignature.getSuccessActionStatus())
                 .addFormDataPart("x-amz-meta-uploader", "android-java")
