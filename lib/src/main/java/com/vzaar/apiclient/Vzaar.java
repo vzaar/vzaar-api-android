@@ -5,6 +5,7 @@ import com.vzaar.apiclient.model.Category;
 import com.vzaar.apiclient.model.EncodingPreset;
 import com.vzaar.apiclient.model.IngestRecipe;
 import com.vzaar.apiclient.model.Playlist;
+import com.vzaar.apiclient.model.Subtitle;
 import com.vzaar.apiclient.model.UploadSignature;
 import com.vzaar.apiclient.model.Video;
 import com.vzaar.apiclient.request.CreateCategoryRequest;
@@ -13,10 +14,12 @@ import com.vzaar.apiclient.request.CreateLinkUploadRequest;
 import com.vzaar.apiclient.request.CreateMultipartUploadSignatureRequest;
 import com.vzaar.apiclient.request.CreatePlaylistRequest;
 import com.vzaar.apiclient.request.CreateSingleUploadSignatureRequest;
+import com.vzaar.apiclient.request.CreateSubtitleRequest;
 import com.vzaar.apiclient.request.CreateVideoRequest;
 import com.vzaar.apiclient.request.DeleteCategoryRequest;
 import com.vzaar.apiclient.request.DeleteIngestRecipeRequest;
 import com.vzaar.apiclient.request.DeletePlaylistRequest;
+import com.vzaar.apiclient.request.DeleteSubtitleRequest;
 import com.vzaar.apiclient.request.DeleteVideoRequest;
 import com.vzaar.apiclient.request.GetCategoriesRequest;
 import com.vzaar.apiclient.request.GetCategoriesSubtreeRequest;
@@ -27,12 +30,16 @@ import com.vzaar.apiclient.request.GetIngestRecipeRequest;
 import com.vzaar.apiclient.request.GetIngestRecipesRequest;
 import com.vzaar.apiclient.request.GetPlaylistRequest;
 import com.vzaar.apiclient.request.GetPlaylistsRequest;
+import com.vzaar.apiclient.request.GetSubtitlesRequest;
 import com.vzaar.apiclient.request.GetVideoRequest;
 import com.vzaar.apiclient.request.GetVideosRequest;
 import com.vzaar.apiclient.request.UpdateCategoryRequest;
+import com.vzaar.apiclient.request.UpdateImageFrameRequest;
 import com.vzaar.apiclient.request.UpdateIngestRecipeRequest;
 import com.vzaar.apiclient.request.UpdatePlaylistRequest;
+import com.vzaar.apiclient.request.UpdateSubtitleRequest;
 import com.vzaar.apiclient.request.UpdateVideoRequest;
+import com.vzaar.apiclient.request.UploadImageFrameRequest;
 import com.vzaar.apiclient.request.VzaarRequest;
 import com.vzaar.apiclient.response.VzaarListResponse;
 import com.vzaar.apiclient.response.VzaarResponse;
@@ -346,9 +353,77 @@ public class Vzaar {
         }.getType(), callback);
     }
 
+    /**
+     * Update a {@link com.vzaar.apiclient.model.Video} via the Vzaar API.
+     */
+    public void updateImageFrame(final UpdateImageFrameRequest request, final VzaarCallback<VzaarResponse<Video>> callback) {
+        sendRequest(request, new TypeToken<VzaarResponse<Video>>() {
+        }.getType(), callback);
+    }
+
+    /**
+     * Upload an image frame {@link com.vzaar.apiclient.model.Video} via the Vzaar API.
+     */
+    public void uploadImageFrame(final UploadImageFrameRequest request, final VzaarCallback<VzaarResponse<Video>> callback) {
+        sendUploadImageFrameRequest(request, new TypeToken<VzaarResponse<Video>>() {
+        }.getType(), callback);
+    }
+
+    /**
+     * Lists {@link com.vzaar.apiclient.model.Subtitle} via the Vzaar API.
+     */
+    public void getSubtitles(final GetSubtitlesRequest request, final VzaarCallback<VzaarListResponse<Subtitle>> callback) {
+        sendRequest(request, new TypeToken<VzaarListResponse<Subtitle>>() {
+        }.getType(), callback);
+    }
+
+    /**
+     * Deletes {@link com.vzaar.apiclient.model.Subtitle} via the Vzaar API.
+     */
+    public void deleteSubtitle(final DeleteSubtitleRequest request, final VzaarCallback<VzaarResponse<Void>> callback) {
+        sendRequest(request, new TypeToken<VzaarResponse<Void>>() {
+        }.getType(), callback);
+    }
+
+    /**
+     * Creates {@link com.vzaar.apiclient.model.Subtitle} via the Vzaar API.
+     */
+    public void createSubtitle(final CreateSubtitleRequest request, final VzaarCallback<VzaarResponse<Subtitle>> callback){
+        if (request.getFile().exists()){
+            sendFileRequest(request, new TypeToken<VzaarResponse<Subtitle>>() {
+            }.getType(), callback);
+        }else{
+            sendRequest(request, new TypeToken<VzaarResponse<Subtitle>>() {
+            }.getType(), callback);
+        }
+    }
+
+    /**
+     * Updates {@link com.vzaar.apiclient.model.Subtitle} via the Vzaar API.
+     */
+    public void updateSubtitle(final UpdateSubtitleRequest request, final VzaarCallback<VzaarResponse<Subtitle>> callback){
+        if (request.getFile().exists()){
+            sendFileRequest(request, new TypeToken<VzaarResponse<Subtitle>>() {
+            }.getType(), callback);
+        }else{
+            sendRequest(request, new TypeToken<VzaarResponse<Subtitle>>() {
+            }.getType(), callback);
+        }
+    }
+
     private void sendRequest(VzaarRequest request, Type responseType, VzaarCallback callback) {
         validateRequest(request, callback);
         apiRequester.sendRequest(request, responseType, callback);
+    }
+
+    private void sendFileRequest(VzaarRequest request, Type responseType, VzaarCallback callback){
+        validateRequest(request, callback);
+        apiRequester.sendFileRequest(request, responseType, callback);
+    }
+
+    private void sendUploadImageFrameRequest(VzaarRequest request, Type responseType, VzaarCallback callback) {
+        validateRequest(request, callback);
+        apiRequester.sendImageFrameRequest(request, responseType, callback);
     }
 
     /**

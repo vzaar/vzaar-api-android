@@ -29,6 +29,7 @@ import com.vzaar.apiclient.request.GetPlaylistsRequest;
 import com.vzaar.apiclient.request.GetVideoRequest;
 import com.vzaar.apiclient.request.GetVideosRequest;
 import com.vzaar.apiclient.request.UpdateCategoryRequest;
+import com.vzaar.apiclient.request.UpdateImageFrameRequest;
 import com.vzaar.apiclient.request.UpdateIngestRecipeRequest;
 import com.vzaar.apiclient.request.UpdatePlaylistRequest;
 import com.vzaar.apiclient.request.UpdateVideoRequest;
@@ -1046,6 +1047,49 @@ public class VzaarTest {
         // When
         vzaar.deletePlaylist(request, null);
     }
+
+
+
+
+    @Test
+    public void testUpdateImageFrame() {
+        // Given
+        UpdateImageFrameRequest request = mock(UpdateImageFrameRequest.class);
+        VzaarCallback<VzaarResponse<Video>> callback = mock(VzaarCallback.class);
+
+        // When
+        vzaar.updateImageFrame(request, callback);
+
+        // Then
+        verifySuccessResponse(callback);
+    }
+
+    @Test
+    public void testUpdateImageFrame_nullRequest_throwsException() {
+        // Given
+        VzaarCallback<VzaarResponse<Video>> callback = mock(VzaarCallback.class);
+
+        // Expect
+        thrown.expect(IllegalArgumentException.class);
+
+        // When
+        vzaar.updateImageFrame(null, callback);
+    }
+
+    @Test
+    public void testUpdateImageFrame_nullCallback_throwsException() {
+        // Given
+        UpdateImageFrameRequest request = mock(UpdateImageFrameRequest.class);
+
+        // Expect
+        thrown.expect(IllegalArgumentException.class);
+
+        // When
+        vzaar.updateImageFrame(request, null);
+    }
+
+
+
 
     private void verifySuccessResponse(VzaarCallback callback) {
         verify(callback, times(1)).onSuccessResponse(any(VzaarResponse.class));

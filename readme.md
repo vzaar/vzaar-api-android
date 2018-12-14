@@ -68,6 +68,97 @@ If you would like to create the signature separately, instead use:
 Vzaar.uploadAndCreateVideo(request, signature, ...);
 ```
 
+### Subtitles
+To create a subtitle request:
+```
+CreateSubtitleRequest request = new CreateSubtitleRequest.Builder(123,"en").setContent("1\n00:00:00,498 --> 00:00:02,827\nMy Subtitles").build();
+
+Vzaar.getInstance().createSubtitle(request, new VzaarCallback<VzaarResponse<Subtitle>>() {
+    @Override
+    public void onSuccessResponse(VzaarResponse<Subtitle> response) {
+        //do something with the response
+        }
+
+    @Override
+    public void onErrorResponse(VzaarResponse<Subtitle> response) {
+        //get the errors from the response
+    }
+
+    @Override
+    public void onNoResponse(VzaarException e) {
+        // :(
+    }
+});
+```
+
+To get subtitles
+```
+GetSubtitlesRequest subtitlesRequest = new GetSubtitlesRequest.Builder(123).build();
+
+Vzaar.getInstance().getSubtitles(subtitlesRequest, new VzaarCallback<VzaarListResponse<Subtitle>>() {
+    @Override
+    public void onSuccessResponse(VzaarListResponse<Subtitle> response) {
+        //do somthing with the response
+    }
+
+    @Override
+    public void onErrorResponse(VzaarListResponse<Subtitle> response) {
+        //get the errors from the response
+    }
+
+    @Override
+        public void onNoResponse(VzaarException e) {
+    // :(
+    }
+});
+```
+
+### Update Image Frame
+To update image frame with time
+```
+UpdateImageFrameRequest imageFrameRequest = new UpdateImageFrameRequest.Builder(123).setTime(1.5).build();
+
+Vzaar.getInstance().updateImageFrame(imageFrameRequest, new VzaarCallback<VzaarResponse<Video>>() {
+    @Override
+    public void onSuccessResponse(VzaarResponse<Video> response) {
+        //do somthing with the response
+    }
+
+    @Override
+    public void onErrorResponse(VzaarResponse<Video> response) {
+        //get the errors from the response
+    }
+
+    @Override
+    public void onNoResponse(VzaarException e) {
+        // :(
+    }
+});
+```
+
+To upload image frame with file
+```
+File file = new File("/storage/path/to/your/image/file");
+UploadImageFrameRequest uploadframeRequest = new UploadImageFrameRequest.Builder(123, file).build();
+Vzaar.getInstance().uploadImageFrame(uploadframeRequest, new VzaarCallback<VzaarResponse<Video>>() {
+    @Override
+    public void onSuccessResponse(VzaarResponse<Video> response) {
+        //do somthing with the response
+    }
+
+    @Override
+    public void onErrorResponse(VzaarResponse<Video> response) {
+        //get the errors from the response
+    }
+
+    @Override
+    public void onNoResponse(VzaarException e) {
+        // :(
+    }
+});
+```
+
+
 For more on video uploading, see the [Vzaar API documentation](https://vzaar.readme.io/docs/video-upload).
 
 ### Full documentation

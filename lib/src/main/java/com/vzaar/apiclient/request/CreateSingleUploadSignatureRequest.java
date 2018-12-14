@@ -12,7 +12,7 @@ import com.vzaar.apiclient.VzaarCallback;
 public class CreateSingleUploadSignatureRequest extends VzaarRequest {
 
     private CreateSingleUploadSignatureRequest() {
-        super("api/v2/signature/single", Method.POST);
+        super("api/v2/signature/single/2", Method.POST);
     }
 
     public static class Builder {

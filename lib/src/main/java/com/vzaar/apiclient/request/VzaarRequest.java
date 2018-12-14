@@ -5,6 +5,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 import com.vzaar.apiclient.VzaarException;
 
+import java.io.File;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
@@ -24,6 +25,8 @@ public class VzaarRequest {
     private final JsonObject body;
     private final Map<String, String> queryParams;
     private final Map<String, String> pathParams;
+    private File file;
+    private final Map<String, String> fileParams;
 
     VzaarRequest(String parameterizedEndpoint, Method method) {
         this.parameterizedEndpoint = parameterizedEndpoint;
@@ -31,6 +34,8 @@ public class VzaarRequest {
         queryParams = new HashMap<>();
         pathParams = new HashMap<>();
         body = new JsonObject();
+        file = new File("");
+        fileParams = new HashMap<>();
     }
 
     Map<String, String> getQueryParams() {
@@ -48,6 +53,10 @@ public class VzaarRequest {
     JsonObject getBody() {
         return body;
     }
+
+    public File getFile() { return file; }
+
+    public Map<String, String> getFileParams() { return fileParams; }
 
     public String getBodyAsJson() {
         return body.toString();
@@ -77,6 +86,8 @@ public class VzaarRequest {
         body.add(key, element);
     }
 
+    void addFileParam(String key, String value) { fileParams.put(key,value); }
+
     String getEndpoint() {
         String endPoint = parameterizedEndpoint;
         for (Map.Entry<String, String> pathParam : pathParams.entrySet()) {
@@ -86,6 +97,10 @@ public class VzaarRequest {
         }
 
         return endPoint;
+    }
+
+    void addFileParam(File file){
+        this.file = file;
     }
 
     public URL buildUrl(String baseUrl) throws VzaarException {
